@@ -18,7 +18,8 @@ faas-cli new --lang python3 hello-openfaas --prefix="<your-docker-username-here>
 ```
 
 The first step will create function in folder: `hello-openfaas`, stack file written
-in `hello-openfaas.yml`
+in `hello-openfaas.yml`. You need to modify `hello-openfaas/hanlder.py` to return
+"Hello OpenFaaS" string.
 
 Second, push docker image and deploy: (with this directory you can start from here)
 ```
