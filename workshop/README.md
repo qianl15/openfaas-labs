@@ -55,3 +55,15 @@ faas-cli deploy -f ./astronaut-finder.yml
 
 faas-cli invoke astronaut-finder -g http://<remote-ip>:31112
 ```
+
+## Get Function Logs
+If you want to get the runtime logs about the function. Log in your kubernetes
+master node and type:
+```
+kubectl logs <function-pod-name> --namespace=openfaas-fn
+```
+
+The pod name can be found by:
+```
+kubectl get pod --namespace=openfaas-fn
+```
