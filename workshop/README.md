@@ -25,7 +25,7 @@ Second, push docker image and deploy: (with this directory you can start from he
 ```
 faas-cli build -f ./hello-openfaas.yml
 faas-cli push -f ./hello-openfaas.yml
-faas-cli deploy -f ./hello-openfaas.yml
+faas-cli deploy -f ./hello-openfaas.yml --gateway http://<remote-ip>:31112
 ```
 
 Finally, invoke the function
@@ -51,10 +51,14 @@ Then the following step would be the same:
 ```
 faas-cli build -f ./astronaut-finder.yml
 faas-cli push -f ./astronaut-finder.yml
-faas-cli deploy -f ./astronaut-finder.yml
+faas-cli deploy -f ./hello-openfaas.yml --gateway http://<remote-ip>:31112
 
 faas-cli invoke astronaut-finder -g http://<remote-ip>:31112
 ```
+
+## Custom binaries as functions
+Follow the instructions [here](https://github.com/openfaas/workshop/blob/master/lab3.md#custom-binaries-as-functions-optional).
+We can put `--lang=dockerfile` and deploy our customized binaries/containers.
 
 ## Get Function Logs
 If you want to get the runtime logs about the function. Log in your kubernetes
