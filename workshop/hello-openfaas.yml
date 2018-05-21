@@ -1,0 +1,9 @@
+provider:
+  name: faas
+  gateway: http://35.227.191.202:31112
+
+functions:
+  hello-openfaas:
+    lang: python3
+    handler: ./hello-openfaas
+    image: qianl15/hello-openfaas
