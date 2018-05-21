@@ -7,3 +7,5 @@ functions:
     lang: python3
     handler: ./astronaut-finder
     image: qianl15/astronaut-finder
+    environment:
+        write_debug: true

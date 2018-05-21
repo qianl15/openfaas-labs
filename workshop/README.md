@@ -67,3 +67,6 @@ The pod name can be found by:
 ```
 kubectl get pod --namespace=openfaas-fn
 ```
+
+As described in the [workshop lab3](https://github.com/openfaas/workshop/blob/master/lab3.md#troubleshooting-verbose-output-with-write_debug), we can add `write_debug: true` to the YAML file and
+re-deploy the function. Then we will be able to see detailed logs.
