@@ -1,0 +1,9 @@
+provider:
+  name: faas
+  gateway: http://35.227.191.202:31112
+
+functions:
+  astronaut-finder:
+    lang: python3
+    handler: ./astronaut-finder
+    image: qianl15/astronaut-finder

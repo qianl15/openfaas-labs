@@ -35,3 +35,23 @@ faas-cli invoke hello-openfaas -g http://<remote-ip>:31112
 
 You should be able to get the result "Hello OpenFaaS" printed to stdout.
 Note that I am using kubernetes as backend, so the gateway port is 31112.
+
+## astronaut-finder
+Similarly, the second example function is astronaut finder that pulls in a
+random name of someone in space aboard the International Space Station (ISS).
+
+Note that this time we modify `./astronaut-finder/requirements.txt` to add
+a module named `requests`.
+This tells the function it needs to use a third-party module named requests for
+accessing websites over HTTP.
+
+We also need to modify `./astronaut-finder/handler.py` to return the string.
+
+Then the following step would be the same:
+```
+faas-cli build -f ./astronaut-finder.yml
+faas-cli push -f ./astronaut-finder.yml
+faas-cli deploy -f ./astronaut-finder.yml
+
+faas-cli invoke astronaut-finder -g http://<remote-ip>:31112
+```
