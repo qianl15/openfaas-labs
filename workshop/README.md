@@ -74,3 +74,29 @@ kubectl get pod --namespace=openfaas-fn
 
 As described in the [workshop lab3](https://github.com/openfaas/workshop/blob/master/lab3.md#troubleshooting-verbose-output-with-write_debug), we can add `write_debug: true` to the YAML file and
 re-deploy the function. Then we will be able to see detailed logs.
+
+## Abnormal behavior
+We found that OpenFaaS will simply fork multiple processes in the same container
+if we only have 1 replica and invoke concurrently.
+```
+curl -w "%{time_total}\n" http://<remote-ip>/function/hello-openfaas && echo "done1" &
+curl -w "%{time_total}\n" http://<remote-ip>/function/hello-openfaas && echo "done2" &
+curl -w "%{time_total}\n" http://<remote-ip>/function/hello-openfaas && echo "done3" &
+
+wait
+```
+
+On the kubernetes server side
+```
+ 00:32:34 Forking fprocess.
+ 00:32:34 Forking fprocess.
+ 00:32:34 Forking fprocess.
+ 00:32:35 Wrote 15 Bytes - Duration: 0.217789 seconds
+ 00:32:35 Wrote 15 Bytes - Duration: 0.219228 seconds
+ 00:32:35 Wrote 15 Bytes - Duration: 0.214042 seconds
+```
+It seems that 3 processes have been created simultaneously, inside the same
+container. This behavior is not the same as AWS Lambda, where each invocation
+will start a new container. We might want to make the `watchdog` component of
+OpenFaaS to be fully serialized.
+
