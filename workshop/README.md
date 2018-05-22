@@ -13,8 +13,7 @@ faas-cli new --list
 ## Hello world in Python
 First, create openfaas-hello basic template files:
 ```
-faas-cli new --lang python3 hello-openfaas --prefix="<your-docker-username-here>" \
-    --gateway=http://<remote-ip>:31112
+faas-cli new --lang python3 hello-openfaas --prefix="<your-docker-username-here>"
 ```
 
 The first step will create function in folder: `hello-openfaas`, stack file written
