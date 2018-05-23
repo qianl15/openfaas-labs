@@ -61,6 +61,17 @@ We can put `--lang=dockerfile` and deploy our customized binaries/containers.
 
 I have the `sorter` and `long-task` examples for this custom binaries.
 
+## Auto-scaling feature
+
+To control scaling behaviour you can set a min/max scale value with a label
+when deploying your function via the CLI or the API:
+```
+  labels:
+    "com.openfaas.scale.min": "10"
+    "com.openfaas.scale.max": "20"
+```
+I added this labels stuff at `long-task.yml` as an example.
+
 ## Get Function Logs
 If you want to get the runtime logs about the function. Log in your kubernetes
 master node and type:

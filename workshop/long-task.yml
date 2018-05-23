@@ -7,3 +7,6 @@ functions:
     lang: dockerfile
     handler: ./long-task
     image: qianl15/long-task
+    labels:
+        "com.openfaas.scale.min": "10"
+        "com.openfaas.scale.max": "10"
