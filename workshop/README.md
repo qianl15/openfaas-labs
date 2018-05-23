@@ -59,6 +59,8 @@ faas-cli invoke astronaut-finder -g http://<remote-ip>:31112
 Follow the instructions [here](https://github.com/openfaas/workshop/blob/master/lab3.md#custom-binaries-as-functions-optional).
 We can put `--lang=dockerfile` and deploy our customized binaries/containers.
 
+I have the `sorter` and `long-task` examples for this custom binaries.
+
 ## Get Function Logs
 If you want to get the runtime logs about the function. Log in your kubernetes
 master node and type:
