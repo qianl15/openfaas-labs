@@ -1,3 +1,6 @@
 [submodule "openfaas/faas-netes"]
 	path = openfaas/faas-netes
 	url = https://github.com/openfaas/faas-netes.git
+[submodule "openfaas/templates"]
+	path = openfaas/templates
+	url = https://github.com/openfaas/templates.git

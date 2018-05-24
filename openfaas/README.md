@@ -3,12 +3,31 @@
 This directory contains code for
 [openfaas-workshop](https://github.com/openfaas/workshop)
 
+## Install OpenFaaS on the server
+Put our submodule `faas-netes` onto your kubernetes master machine.
+
+```
+cd faas-netes && \
+    kubectl apply -f ./namespaces.yml,./yaml
+```
+
+Then you can verify that OpenFaaS has been installed by:
+```
+kubectl get all --namespace=openfaas
+```
+
 ## Pull the templates
 Follow the instructions:
 ```
 faas-cli template pull
 faas-cli new --list
 ```
+
+Alternatively, we dumped the templates as a submodule. You can do:
+```
+cp -r templates/template .
+```
+Copy template to the current directory.
 
 ## Hello world in Python
 First, create openfaas-hello basic template files:
