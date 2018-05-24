@@ -6,5 +6,5 @@ Currently, we are still exploring :)
 
 ## List of platforms
 - [x] [OpenFaaS](openfaas)
-- [ ] Fission
+- [x] [Fission](fission)
 - [ ] Kubeless
