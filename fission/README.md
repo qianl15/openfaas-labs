@@ -1,6 +1,6 @@
 # Fission
-=============
 
+## Preparation
 In order to use Fission from a remote client, you need to expose the controller
 to a public TCP port!
 
