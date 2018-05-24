@@ -16,5 +16,6 @@ kubectl get services --namespace=fission
 
 On the remote client, set environmental variable:
 ```
-export FISSION_URL=<external ip>:<controller port>
+export FISSION_URL=<remoteip>:<controller port>
+export FISSION_ROUTER=<remote-ip>:32268
 ```
