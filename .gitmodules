@@ -4,3 +4,6 @@
 [submodule "openfaas/templates"]
 	path = openfaas/templates
 	url = https://github.com/openfaas/templates.git
+[submodule "fission/fission"]
+	path = fission/fission
+	url = https://github.com/fission/fission.git

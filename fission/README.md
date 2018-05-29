@@ -24,11 +24,45 @@ helm init --service-account tiller --upgrade
 ```
 
 #### Install Fission
+
+##### Use Fission public release
 It is pretty simple to use their release packet:
 ```
 helm install --namespace fission https://github.com/fission/fission/releases/download/0.7.2/fission-all-0.7.2.tgz
 ```
 The fission namespace in Kubernetes is `fission`, and the functions namespace is `fission-function`.
+
+##### Build from scratch
+If you changed some files inside fission and wanted to re-compile and install fission,
+you can follow the instructions [here](https://docs.fission.io/0.7.2/installation/installation/).
+But that instruction is not 100% correct. Here are my experiences:
+    1. Install `go` (I installed go version 1.10)
+    2. Install `glide`
+        ```
+        sudo add-apt-repository ppa:masterminds/glide && sudo apt-get update
+        sudo apt-get install glide
+        ```
+    3. Clone fission to your `$GOPATH/src/github.com/fission/fission`
+        You can put our submodule `fission` to that directory.
+        ```
+        cd $GOPATH/src/github.com/fission/fission
+        glide install -v
+        ```
+    4. Build fission server and an image. Change the docker hub account to your
+        own account, don't push to `fission` account. And remember to pass the
+        version tag, otherwise, pods cannot find correct images.
+        ```
+        pushd fission-bundle
+        sudo ./push.sh 0.7.2
+        ```
+    5. Finally, use helm to install fission. Run command from top fission directory.
+        ```
+        helm install --set "image=<docker hub name>/fission-bundle,pullPolicy=IfNotPresent,analytics=false" charts/fission-all --namespace fission
+        ```
+    6. If you want to update CLI too, build with (from top fission directory):
+        ```
+        cd fission && go install
+        ```
 
 #### Install Fission CLI
 On a remote/master machine, you can install the CLI by using their release download.
@@ -50,15 +84,15 @@ kubectl expose service controller --type=LoadBalancer --name=controller-open --n
 Then check the public port for `controller-open` service:
 ```
 kubectl get services --namespace=fission
-
->
-controller-open   LoadBalancer   ...   31112:<controller-port>/TCP
 ```
+> controller-open   LoadBalancer   ...   31112:<controller-port>/TCP
+> router            LoadBalancer   ...   80:<router-port>/TCP
+
 
 On the remote client, set environmental variable:
 ```
 export FISSION_URL=<remote-ip>:<controller-port>
-export FISSION_ROUTER=<remote-ip>:32268
+export FISSION_ROUTER=<remote-ip>:<router-port>
 ```
 
 Or you can pass `--server` option manually for each command:
