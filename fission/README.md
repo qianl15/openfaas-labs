@@ -1,6 +1,44 @@
 # Fission
 
 ## Preparation
+
+### Installation Guide
+The original documentation is [here](https://docs.fission.io/0.7.2/installation/installation/).
+You first need to set up a running kubernetes luster. Fission requires at least
+Kubernetes 1.6.
+
+#### Helm
+Install helm
+```
+curl -LO https://storage.googleapis.com/kubernetes-helm/helm-v2.7.0-linux-amd64.tar.gz
+tar xzf helm-v2.7.0-linux-amd64.tar.gz
+sudo mv linux-amd64/helm /usr/local/bin
+```
+
+To avoid RBAC related issue, we need to install helm using a dedicated service
+accaount:
+```
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+helm init --service-account tiller --upgrade
+```
+
+#### Install Fission
+It is pretty simple to use their release packet:
+```
+helm install --namespace fission https://github.com/fission/fission/releases/download/0.7.2/fission-all-0.7.2.tgz
+```
+The fission namespace in Kubernetes is `fission`, and the functions namespace is `fission-function`.
+
+#### Install Fission CLI
+On a remote/master machine, you can install the CLI by using their release download.
+```
+curl -Lo fission https://github.com/fission/fission/releases/download/0.7.2/fission-cli-linux && chmod +x fission && sudo mv fission /usr/local/bin/
+```
+
+#### Working remotely
+By default, fission CLI only works for local deployment. Howerver, you can specify
+the `--server` option in CLI commands to be the remote controller URL.
 In order to use Fission from a remote client, you need to expose the controller
 to a public TCP port!
 
@@ -21,6 +59,11 @@ On the remote client, set environmental variable:
 ```
 export FISSION_URL=<remote-ip>:<controller-port>
 export FISSION_ROUTER=<remote-ip>:32268
+```
+
+Or you can pass `--server` option manually for each command:
+```
+fission --server=<remote-ip>:<controller-prot> ...
 ```
 
 ## Hello World Node.js example
