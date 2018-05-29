@@ -64,3 +64,24 @@ This example derived from the [original site](https://docs.fission.io/0.7.2/usag
     ```
     fission fn update --name hello --code ../hello.js
     ```
+
+## Fission Auto Scaling
+
+In order to make HPA work, you need to start metrics server:
+```
+git clone https://github.com/kubernetes-incubator/metrics-server.git
+cd metrics-server
+kubectl create -f deploy/1.8+/
+```
+
+Then create a new function called `hello2`.
+```
+fission route create --function hello --url /hello2
+
+fission fn create --name hello2 --env node --code hello.js --minmemory 64 --maxmemory 128 --minscale 1 --maxscale 6 --executortype newdeploy --targetcpu 50
+```
+
+Use `hey` to generate load. Note that hey only works for go version 1.7+
+```
+hey -c 250 -n 10000 http://$FISSION_ROUTER/hello2
+```
