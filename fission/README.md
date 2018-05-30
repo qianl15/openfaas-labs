@@ -168,7 +168,32 @@ Then watch the scaling effect by:
 kubectl get hpa -n fission-function -w
 ```
 
-## Fissioin compiled functions
+## Fissioin builds/compiled functions
+Fission allows us to deploy more complicated function packets.
+
+### From source
+Based on original [post](https://docs.fission.io/0.7.2/usage/functions/#building-function-from-source),
+The source code is at [sourcepkg](sourcepkg).
+
+1. Create an environment with env image and python-builder image.
+    ```
+    fission env create --name python --image fission/python-env --builder fission/python-builder:latest --mincpu 40 --maxcpu 80 --minmemory 64 --maxmemory 128 --poolsize 2
+    ```
+
+2. Then zip the directory and create the function & route
+    ```
+    zip -jr demo-src-pkg.zip sourcepkg/
+    fission fn create --name hellopy --env python --src demo-src-pkg.zip  --entrypoint "user.main" --buildcmd "./build.sh"
+    fission route create --function hellopy --url /hellopy
+    ```
+
+3. You can check logs of the builder in `fission-builder` namespace:
+    ```
+    kubectl -n fission-builder logs -f <pod id> builder
+    ```
+    After the build process is succeeded, we can use that function as normal.
+
+### From compiled package
 Similar to AWS Lambda, we can deploy a pre-built deployment package to Fission.
 The [documentation](https://docs.fission.io/0.7.2/usage/functions/#using-compiled-artifacts-with-fission)
 has instructions to do that.
@@ -194,3 +219,6 @@ has instructions to do that.
     ```
     fission fn logs --name hellopy
     ```
+
+For more information about packaging source code, please refer to Fission official
+[webpage](https://docs.fission.io/0.7.2/usage/package/).
