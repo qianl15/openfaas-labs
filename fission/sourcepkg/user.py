@@ -8,9 +8,10 @@ document = """
     d: 4
 """
 
-def main(context):
+# Python env doesn't pass in an argument
+def main():
     return yaml.dump(yaml.load(document))
 
 if __name__ == "__main__":
-    res = main("abc")
-    print res
+    res = main()
+    print(res)
