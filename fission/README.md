@@ -178,6 +178,20 @@ kubectl get hpa -n fission-function -w
 ## Fissioin builds/compiled functions
 Fission allows us to deploy more complicated function packets.
 
+Be aware that the storagesvc pod may not work correctly, refer to the 
+[issue #618](https://github.com/fission/fission/issues/618).
+My workaround was to edit volumes manually:
+```
+kubectl -n fission edit deploy storagesvc
+```
+
+and edit `volumes` section as follows:
+```
+volumes:
+  - name: fission-storage
+    emptyDir: {}
+```
+
 ### From source
 Based on original [post](https://docs.fission.io/0.7.2/usage/functions/#building-function-from-source),
 The source code is at [sourcepkg](sourcepkg).
