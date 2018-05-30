@@ -4,8 +4,15 @@
 
 ### Installation Guide
 The original documentation is [here](https://docs.fission.io/0.7.2/installation/installation/).
-You first need to set up a running kubernetes luster. Fission requires at least
+You first need to set up a running kubernetes cluster. Fission requires at least
 Kubernetes 1.6.
+
+If you want a quick start, then download my [config](https://github.com/qianl15/config) repo.
+And run:
+```
+cd config/gce
+./install_k8s.sh
+```
 
 #### Helm
 Install helm
