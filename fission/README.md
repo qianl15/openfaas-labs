@@ -167,3 +167,30 @@ Then watch the scaling effect by:
 ```
 kubectl get hpa -n fission-function -w
 ```
+
+## Fissioin compiled functions
+Similar to AWS Lambda, we can deploy a pre-built deployment package to Fission.
+The [documentation](https://docs.fission.io/0.7.2/usage/functions/#using-compiled-artifacts-with-fission)
+has instructions to do that.
+
+1. Create an environment with env image and python-builder image.
+    ```
+    fission env create --name python --image fission/python-env --builder fission/python-builder:latest --mincpu 40 --maxcpu 80 --minmemory 64 --maxmemory 128 --poolsize 2
+    ```
+
+2. Then zip the directory and create the function & route
+    ```
+    zip -jr demo-deploy-pkg.zip testDir/
+    fission fn create --name hellopy --env python --deploy demo-deploy-pkg.zip --entrypoint "hello.main"
+    fission route create --function hellopy --url /hellopy
+    ```
+
+3. Then we can test that function as usual.
+    ```
+    fission fn test --name hellopy
+    ```
+
+4. Or view the logs of that function (must on the server machine).
+    ```
+    fission fn logs --name hellopy
+    ```
