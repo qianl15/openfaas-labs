@@ -162,3 +162,8 @@ Use `hey` to generate load. Note that hey only works for go version 1.7+
 ```
 hey -c 250 -n 10000 http://$FISSION_ROUTER/hello2
 ```
+
+Then watch the scaling effect by:
+```
+kubectl get hpa -n fission-function -w
+```
