@@ -70,6 +70,8 @@ But that instruction is not 100% correct. Here are my experiences:
     ```bash
     cd fission && go install
     ```
+    In addition, we provide an installation [script](https://github.com/qianl15/fission-s/blob/qianDev/fission/install-cli.sh).
+    You can use that to compile with version, date, git commit data.
 
 #### Install Fission CLI
 On a remote/master machine, you can install the CLI by using their release download.
