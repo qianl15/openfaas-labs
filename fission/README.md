@@ -243,3 +243,51 @@ has instructions to do that.
 
 For more information about packaging source code, please refer to Fission official
 [webpage](https://docs.fission.io/0.7.2/usage/package/).
+
+
+## Invoke with Data & Python code
+
+We can pass data into a python handler, the example file is [requestdata.py](requestdata.py).
+For more python examples, please refer to [fission/examples/python](https://github.com/fission/fission/tree/master/examples/python).
+
+`requestdata.py`:
+```
+import sys
+from flask import request
+from flask import current_app
+
+# Python env doesn't pass in an argument
+# we can get request data by request.headers, request.get_data()
+def main():
+    current_app.logger.info("Received request")
+    msg = '---HEADERS---\n{}\n--BODY--\n{}\n-----\n'.format(request.headers, request.get_data())
+    current_app.logger.info(msg)
+
+    # You can return any http status code you like, simply place a comma after
+    # your return statement, and typing in the status code.
+    return msg, 200
+```
+
+*Note that Python environment must specify `--entrypoint`.*
+
+To test this script, simply create a function:
+```
+fission fn create --name reqdatapy --code requestdata.py --env python --executortype poolmgr --entrypoint "requestdata.main"
+```
+
+Or deploy with `newdeploy` type.
+```
+fission fn create --name reqdatapy --code requestdata.py --env python --entrypoint "requestdata.main" --minscale 1 --maxscale 5  --executortype newdeploy
+```
+
+And remember to create route to that function
+```
+fission route create --function reqdatapy --url /reqdatapy --method [GET/POST/...]
+```
+
+Then test with `curl` or with fission-cli (suppose we use POST method here):
+```
+curl -d '{"key1":"value"}' -H "Content-Type: application/json" -X POST $FISSION_ROUTER/reqdatapy
+
+fission fn test --method POST -b '{"key1":"value"}' --name reqdatapy
+```
