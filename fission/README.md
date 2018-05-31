@@ -291,3 +291,28 @@ curl -d '{"key1":"value"}' -H "Content-Type: application/json" -X POST $FISSION_
 
 fission fn test --method POST -b '{"key1":"value"}' --name reqdatapy
 ```
+
+## Customized Docker Image and Binary Environment
+Instead of using `fission/binary-env`, we can compile our own image and create
+Fission environment based on that.
+We can modify Fission's [binary environment](https://github.com/fission/fission/tree/master/environments/binary).
+Then build our own image:
+```
+sudo docker build --tag=<docker userid>/binary-env .
+sudo docker push <docker userid>/binary-env
+```
+Note that we need newer version of docker. Because older versions cannot support
+multi-stage build.
+
+After that, we can use this new environment! Refer to [binary example](https://github.com/fission/fission/tree/master/examples/binary):
+```
+# Upload the function to fission
+fission function create --name echo --env binary-env --code echo.sh
+
+# Map /hello to the hello function
+fission route create --method POST --url /echo --function echo
+
+# Run the function
+curl -XPOST -d 'Echoooooo!'  http://$FISSION_ROUTER/echo
+```
+Similarly, you can create a function with `--code hello.sh` and test.
