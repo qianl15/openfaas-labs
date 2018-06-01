@@ -3,7 +3,7 @@
 gcc hello.c -o hello --static
 
 DEPLOYDIR=deploy-pkg
-mkdir -p $DEPLOYDIR/bins/
-mv hello $DEPLOYDIR/bins/
+mkdir -p $DEPLOYDIR
+mv hello $DEPLOYDIR/
 
-zip -r exe-test.zip $DEPLOYDIR/*
+zip -jr exe-test.zip $DEPLOYDIR

@@ -4,6 +4,7 @@ from flask import request
 from flask import current_app
 from executable import Executable
 
+MYPATH = os.path.dirname(os.path.realpath(__file__))
 def main():
     current_app.logger.info("Received request")
     msg = '---HEADERS---\n{}\n--BODY--\n{}\n-----\n'.format(request.headers, request.get_data())
@@ -14,7 +15,7 @@ def main():
     current_app.logger.info(reqStr)
 
     # Call executable binary
-    exe = Executable('bins/hello')
+    exe = Executable(os.path.join(MYPATH, 'hello'))
     result = exe.run(reqStr)
     current_app.logger.info('OUT: {}\nERR: {}\nRET: {}'.format(
         exe.stdout, exe.stderr, exe.returncode))
@@ -23,7 +24,7 @@ def main():
 
 if __name__ == "__main__":
     reqStr = "haha"
-    exe = Executable('bins/hello')
+    exe = Executable('./hello')
     result = exe.run(reqStr)
     print('OUT: {}\nERR: {}\nRET: {}'.format(
         exe.stdout, exe.stderr, exe.returncode))
