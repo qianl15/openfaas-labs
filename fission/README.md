@@ -57,7 +57,9 @@ But that instruction is not 100% correct. Here are my experiences:
     ```  
 4. Build fission server and an image. Change the docker hub account to your
     own account, don't push to `fission` account. And remember to pass the
-    version tag, otherwise, pods cannot find correct images.  
+    version tag, otherwise, pods cannot find correct images. You may also need to
+    log in to your docker account using `docker login` if you get the following error:
+    *denied: requested access to the resource is denied*
     ```bash
     pushd fission-bundle
     sudo ./push.sh 0.7.2
