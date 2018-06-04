@@ -95,15 +95,14 @@ kubectl expose service controller --type=LoadBalancer --name=controller-open --n
 Then check the public port for `controller-open` service:
 ```bash
 kubectl get services --namespace=fission
+
+controller-open   LoadBalancer ... <cluster-ip> ... 31112:<controller-port>/TCP  
+router            LoadBalancer ... <cluster-ip> ... 80:<router-port>/TCP
 ```
-> controller-open   LoadBalancer   ...   31112:<controller-port>/TCP  
-> router            LoadBalancer   ...   80:<router-port>/TCP
-
-
 On the remote client, set environmental variable:
 ```bash
-export FISSION_URL=<remote-ip>:<controller-port>
-export FISSION_ROUTER=<remote-ip>:<router-port>
+export FISSION_URL=<controller-open-cluster-ip>:<controller-port>
+export FISSION_ROUTER=<router-cluster-ip>:<router-port>
 ```
 
 Or you can pass `--server` option manually for each command:
@@ -179,7 +178,7 @@ Then watch the scaling effect by:
 kubectl get hpa -n fission-function -w
 ```
 
-## Fissioin builds/compiled functions
+## Fission builds/compiled functions
 Fission allows us to deploy more complicated function packets.
 
 Be aware that the storagesvc pod may not work correctly, refer to the 
