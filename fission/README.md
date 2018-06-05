@@ -178,6 +178,33 @@ Then watch the scaling effect by:
 kubectl get hpa -n fission-function -w
 ```
 
+## Monitoring and deploying Custom Metrics
+A great step-by-step guide with source code for deploying custom metrics can be found
+[here](https://github.com/stefanprodan/k8s-prom-hpa). By deploying Prometheus and the
+*custom* metrics server (different from the one above), you also get the custom metrics provided
+by Fission.
+
+A couple of things to note and be aware of:
+1) Depending on how you have installed `go`, the Makefile for creating the TLS certificates may misbehave:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If the `go` command is not found, yet it has been installed,
+edit [line 15](https://github.com/stefanprodan/k8s-prom-hpa/blob/master/Makefile#L15) to be:
+`/usr/local/go/bin/go get -u github.com/cloudflare/cfssl/cmd/...`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If `cfssl` and `cfssljson` are not found after the prior step, edit
+[line 18](https://github.com/stefanprodan/k8s-prom-hpa/blob/master/Makefile#L18) to append `cfssl` and
+`cfssljson` with the full path of where it was installed.
+
+2) As mentioned in the blog, the metrics server will update/sync every 30 seconds. To change this interval,
+we need to change the [scrape_interval](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Cscrape_config%3E).
+This can be done [here](https://github.com/stefanprodan/k8s-prom-hpa/blob/master/prometheus/prometheus-cfg.yaml#L29). Change this to be
+a value like 5s, and scale `scrape_timeout` accordingly. IMPORTANT: you may also like to update
+[metrics-relist-interval](https://github.com/stefanprodan/k8s-prom-hpa/blob/master/custom-metrics-api/custom-metrics-apiserver-deployment.yaml#L30), a parameter in
+custom-metrics-api/custom-metrics-apiserver-deployment.yaml, since this controls the interval at which to update the cache of 
+available metrics from Prometheus. *Make sure this value is always greater than the scrape_interval*, or the metrics will not be available
+periodically!
+
+
 ## Fission builds/compiled functions
 Fission allows us to deploy more complicated function packets.
 
