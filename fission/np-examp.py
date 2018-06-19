@@ -17,6 +17,10 @@ def main():
     z = np.matmul(x,y)
     zz = np.array2string(z)
 
+    fd = open('npresult.txt', 'w')
+    fd.write(zz + '\n')
+    fd.close()
+
     fin_res = ''
 
     client = storage.Client()
@@ -29,6 +33,12 @@ def main():
     print("Checking bucket...")
     if not bucket_fail:
       print("Bucket didn't fail")
+
+      # Upload file
+      blobul = bucket.blob('npres.txt')
+      blobul.upload_from_filename('npresult.txt')
+
+      # Download blob to read
       blob = bucket.get_blob('aws_prop.txt')
       if blob == None:
         fin_res = 'Bucket found, blob not found'
