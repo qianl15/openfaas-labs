@@ -58,16 +58,18 @@ ENV BUILD_PACKAGES="\
         libfreetype6 \
         libjpeg62-turbo \
         libgomp1 \
-	libev-dev \
+	      libev-dev \
         python3 \
         python3-pip" \
     PIP_PACKAGES="\
-	Flask===0.11.1 \
-	bjoern \
-	httplib2 \
-	requests==2.7.0 \
-	redis \
-	hiredis \
+        Flask===0.11.1 \
+        bjoern \
+        httplib2 \
+        requests \
+        redis \
+        hiredis \
+        google-cloud-storage \
+        urllib3 \
         numpy \
         tensorflow" \
     PYTHON_VERSION=3.6.4 \
