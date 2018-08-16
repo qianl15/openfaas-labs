@@ -14,9 +14,8 @@ if [[ "${master_slave}" != "s"  &&  "${master_slave}" != "m" ]]; then
   exit 1
 fi
 
-echo ${master_slave}", yay!"
-
-exit
+echo "Starting kubernetes setup in 3 seconds"
+sleep 3
 
 # Install docker
 sudo apt-get update \
